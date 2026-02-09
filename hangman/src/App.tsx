@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
 import Game from './pages/Game';
@@ -26,6 +27,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <div className="flex min-h-screen flex-col">
         <Navbar />
@@ -40,6 +42,7 @@ function App() {
         </main>
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

@@ -26,7 +26,7 @@ export function HangmanSVG({ wrongCount }: HangmanSVGProps) {
       <style>
         {`
           .hangman-part path, .hangman-part circle {
-            stroke: #707070; stroke-width: 0.1; stroke-linecap: round; fill: none;
+            stroke-width: 0.1; stroke-linecap: round; fill: none;
           }
           .hangman-part {
             opacity: 0;

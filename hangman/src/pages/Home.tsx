@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { startGame } from '../store/slices/wordsSlice';
+import { Button } from '../components/Button';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -31,10 +32,11 @@ export default function Home() {
       style={{
         minHeight: 'calc(100vh - 2.5rem)',
         width: '100%',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: 'var(--bg-page)',
       }}
     >
       <div
+        className="page-wrapper"
         style={{
           display: 'flex',
           minHeight: 'calc(100vh - 2.5rem)',
@@ -43,23 +45,25 @@ export default function Home() {
         }}
       >
         <div
+          className="page-card"
           style={{
             display: 'flex',
             flexDirection: 'column',
             height: '75vh',
             width: '75vw',
             borderRadius: 24,
-            backgroundColor: '#ffffff',
+            backgroundColor: 'var(--surface)',
             padding: '2rem',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+            boxShadow: 'var(--shadow)',
           }}
         >
           <h1
+            className="home-title"
             style={{
               textAlign: 'center',
               fontSize: '1.875rem',
               fontWeight: 700,
-              color: '#111827',
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
@@ -69,7 +73,7 @@ export default function Home() {
             style={{
               marginTop: 12,
               textAlign: 'center',
-              color: '#6b7280',
+              color: 'var(--text-secondary)',
               marginBottom: 0,
             }}
           >
@@ -86,84 +90,40 @@ export default function Home() {
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-              <button
-                type="button"
+              <Button
+                variant="default"
+                selected={selected === 'easy'}
                 onClick={() => setSelected('easy')}
-                style={{
-                  minWidth: 220,
-                  padding: '18px 16px',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  borderRadius: 12,
-                  border: '2px solid',
-                  backgroundColor: selected === 'easy' ? '#2563eb' : '#ffffff',
-                  color: selected === 'easy' ? '#ffffff' : '#1f2937',
-                  borderColor: selected === 'easy' ? '#1d4ed8' : '#d1d5db',
-                  cursor: 'pointer',
-                }}
               >
                 Easy (6-8)
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="default"
+                selected={selected === 'medium'}
                 onClick={() => setSelected('medium')}
-                style={{
-                  minWidth: 220,
-                  padding: '18px 16px',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  borderRadius: 12,
-                  border: '2px solid',
-                  backgroundColor: selected === 'medium' ? '#2563eb' : '#ffffff',
-                  color: selected === 'medium' ? '#ffffff' : '#1f2937',
-                  borderColor: selected === 'medium' ? '#1d4ed8' : '#d1d5db',
-                  cursor: 'pointer',
-                }}
               >
                 Medium (9-11)
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="default"
+                selected={selected === 'hard'}
                 onClick={() => setSelected('hard')}
-                style={{
-                  minWidth: 220,
-                  padding: '18px 16px',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  borderRadius: 12,
-                  border: '2px solid',
-                  backgroundColor: selected === 'hard' ? '#2563eb' : '#ffffff',
-                  color: selected === 'hard' ? '#ffffff' : '#1f2937',
-                  borderColor: selected === 'hard' ? '#1d4ed8' : '#d1d5db',
-                  cursor: 'pointer',
-                }}
               >
                 Hard (12-14)
-              </button>
+              </Button>
             </div>
 
-            <div style={{ marginTop: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <button
-                type="button"
-                onClick={handlePlay}
+            <div className="home-buttons-wrap" style={{ marginTop: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Button
+                variant="primary"
                 disabled={!selected}
-                style={{
-                  minWidth: 220,
-                  padding: '22px 16px',
-                  fontSize: 16,
-                  fontWeight: 600,
-                  borderRadius: 12,
-                  border: '2px solid',
-                  backgroundColor: selected ? '#2563eb' : '#e5e7eb',
-                  color: selected ? '#ffffff' : '#6b7280',
-                  borderColor: selected ? '#1d4ed8' : '#d1d5db',
-                  cursor: selected ? 'pointer' : 'not-allowed',
-                }}
+                onClick={handlePlay}
+                style={{ padding: '22px 16px', fontSize: 16 }}
               >
                 Let&apos;s play
-              </button>
+              </Button>
               {error && (
-                <p style={{ marginTop: 8, fontSize: 14, color: '#dc2626' }}>
+                <p style={{ marginTop: 8, fontSize: 14, color: 'var(--error)' }}>
                   {error}
                 </p>
               )}

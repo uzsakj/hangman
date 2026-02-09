@@ -4,10 +4,9 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { addGuess, clearGame } from '../store/slices/gameSlice';
 import { startGame } from '../store/slices/wordsSlice';
 import { HangmanSVG } from '../components/HangmanSVG';
+import { Button } from '../components/Button';
 
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
-const ROW1 = ALPHABET.slice(0, 13);
-const ROW2 = ALPHABET.slice(13, 26);
 const MAX_WRONG = 6;
 
 export default function Game() {
@@ -58,8 +57,8 @@ export default function Game() {
 
   if (word === null) {
     return (
-      <div style={{ minHeight: 'calc(100vh - 2.5rem)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f3f4f6' }}>
-        <p style={{ margin: 0, color: '#6b7280' }}>Loading...</p>
+      <div style={{ minHeight: 'calc(100vh - 2.5rem)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-page)' }}>
+        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Loading...</p>
       </div>
     );
   }
@@ -69,10 +68,11 @@ export default function Game() {
       style={{
         minHeight: 'calc(100vh - 2.5rem)',
         width: '100%',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: 'var(--bg-page)',
       }}
     >
       <div
+        className="page-wrapper"
         style={{
           display: 'flex',
           minHeight: 'calc(100vh - 2.5rem)',
@@ -81,6 +81,7 @@ export default function Game() {
         }}
       >
         <div
+          className="page-card game-card-inner"
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -88,9 +89,9 @@ export default function Game() {
             height: '75vh',
             width: '75vw',
             borderRadius: 24,
-            backgroundColor: '#ffffff',
+            backgroundColor: 'var(--surface)',
             padding: '2rem',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+            boxShadow: 'var(--shadow)',
           }}
         >
           {/* Left section */}
@@ -100,7 +101,7 @@ export default function Game() {
                 margin: 0,
                 fontSize: '1.5rem',
                 fontWeight: 700,
-                color: '#111827',
+                color: 'var(--text-primary)',
               }}
             >
               Hangman game
@@ -112,7 +113,7 @@ export default function Game() {
                   margin: '12px 0 0',
                   fontSize: '1.125rem',
                   fontWeight: 600,
-                  color: won ? '#059669' : '#dc2626',
+                  color: won ? 'var(--success)' : 'var(--error)',
                 }}
               >
                 {won ? 'You have won!' : 'You have lost!'}
@@ -120,6 +121,7 @@ export default function Game() {
             )}
 
             <div
+              className="game-display-word"
               style={{
                 marginTop: 16,
                 fontSize: 24,
@@ -131,47 +133,26 @@ export default function Game() {
               {displayWord || '...'}
             </div>
 
-            <div style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {ROW1.map((letter) => {
+            <div
+              className="game-keyboard"
+              style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}
+            >
+              {ALPHABET.map((letter) => {
                 const used = guessed.has(letter);
                 return (
                   <button
                     key={letter}
                     type="button"
+                    className="game-letter-btn"
                     onClick={() => guess(letter)}
                     disabled={used}
                     style={{
                       width: 36,
                       height: 36,
                       borderRadius: 8,
-                      border: '1px solid #d1d5db',
-                      backgroundColor: used ? '#e5e7eb' : '#ffffff',
-                      color: used ? '#9ca3af' : '#374151',
-                      fontWeight: 600,
-                      cursor: used ? 'default' : 'pointer',
-                    }}
-                  >
-                    {letter.toUpperCase()}
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {ROW2.map((letter) => {
-                const used = guessed.has(letter);
-                return (
-                  <button
-                    key={letter}
-                    type="button"
-                    onClick={() => guess(letter)}
-                    disabled={used}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 8,
-                      border: '1px solid #d1d5db',
-                      backgroundColor: used ? '#e5e7eb' : '#ffffff',
-                      color: used ? '#9ca3af' : '#374151',
+                      border: '1px solid var(--border)',
+                      backgroundColor: used ? 'var(--muted-bg)' : 'var(--surface)',
+                      color: used ? 'var(--text-secondary)' : 'var(--text-muted)',
                       fontWeight: 600,
                       cursor: used ? 'default' : 'pointer',
                     }}
@@ -182,46 +163,23 @@ export default function Game() {
               })}
             </div>
 
-            <p style={{ marginTop: 20, marginBottom: 0, fontSize: 14, color: '#4b5563' }}>
+            <p style={{ marginTop: 20, marginBottom: 0, fontSize: 14, color: 'var(--text-muted)' }}>
               remaining possibility of failures: <strong>{remaining}</strong>
             </p>
 
-            <div style={{ marginTop: 24, display: 'flex', gap: 12 }}>
-              <button
-                type="button"
-                onClick={endGame}
-                style={{
-                  padding: '10px 16px',
-                  borderRadius: 8,
-                  border: '2px solid #2563eb',
-                  backgroundColor: '#ffffff',
-                  color: '#2563eb',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
+            <div className="game-actions" style={{ marginTop: 24, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Button variant="outline" size="sm" onClick={endGame}>
                 End game
-              </button>
-              <button
-                type="button"
-                onClick={startNewGame}
-                style={{
-                  padding: '10px 16px',
-                  borderRadius: 8,
-                  border: 'none',
-                  backgroundColor: '#2563eb',
-                  color: '#ffffff',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
+              </Button>
+              <Button variant="primary" size="sm" onClick={startNewGame}>
                 Start new game
-              </button>
+              </Button>
             </div>
           </div>
 
           {/* Right section: hangman SVG */}
           <div
+            className="game-svg-section"
             style={{
               flex: '0 0 220px',
               display: 'flex',
