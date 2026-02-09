@@ -5,9 +5,17 @@
 @layer base {
   html,
   body {
-    @apply min-h-screen antialiased overflow-hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   #root {
-    @apply min-h-screen overflow-hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
   }
 }
