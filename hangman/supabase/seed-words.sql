@@ -1,7 +1,7 @@
 -- Ensure pgcrypto is available for password hashing (Supabase usually has it)
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- Default admin user: email admin@localhost, password admin (for Admin page login)
+-- Default admin user: email admin@admin.com, password admin (for Admin page login)
 INSERT INTO auth.users (
   instance_id,
   id,
@@ -61,7 +61,7 @@ SELECT
   current_timestamp,
   current_timestamp
 FROM auth.users u
-WHERE u.email = 'admin@localhost'
+WHERE u.email = 'admin@admin.com'
   AND NOT EXISTS (
     SELECT 1 FROM auth.identities i
     WHERE i.user_id = u.id AND i.provider = 'email'
