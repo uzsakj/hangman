@@ -1,5 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import type { RootState } from '../index';
 import { supabase } from '../../lib/supabase';
+
+export const DIFFICULTY_RANGES: Record<string, [number, number]> = {
+  easy: [6, 8],
+  medium: [9, 11],
+  hard: [12, 14],
+};
+
+function getWordsByDifficulty(words: string[], difficulty: string): string[] {
+  const [min, max] = DIFFICULTY_RANGES[difficulty] ?? [6, 8];
+  return words.filter((w) => w.length >= min && w.length <= max);
+}
 
 export const fetchWords = createAsyncThunk(
   'words/fetchWords',
@@ -39,8 +51,24 @@ export const addWord = createAsyncThunk(
   }
 );
 
+export const startGame = createAsyncThunk(
+  'words/startGame',
+  async (difficulty: string, { getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const words = getWordsByDifficulty(state.words.words, difficulty);
+    if (words.length === 0) {
+      return rejectWithValue(`No words available for ${difficulty}`);
+    }
+    const word = words[Math.floor(Math.random() * words.length)] ?? '';
+    return { word, difficulty };
+  }
+);
+
 type WordsState = {
   words: string[];
+  easyWords: string[];
+  mediumWords: string[];
+  hardWords: string[];
   loading: boolean;
   error: string | null;
   lastFetchedAt: number | null;
@@ -48,6 +76,9 @@ type WordsState = {
 
 const initialState: WordsState = {
   words: [],
+  easyWords: [],
+  mediumWords: [],
+  hardWords: [],
   loading: false,
   error: null,
   lastFetchedAt: null,
@@ -72,6 +103,15 @@ const wordsSlice = createSlice({
         state.error = null;
         state.words = action.payload;
         state.lastFetchedAt = Date.now();
+        state.easyWords = action.payload.filter(
+          (w) => w.length >= 6 && w.length <= 8
+        );
+        state.mediumWords = action.payload.filter(
+          (w) => w.length >= 9 && w.length <= 11
+        );
+        state.hardWords = action.payload.filter(
+          (w) => w.length >= 12 && w.length <= 14
+        );
       })
       .addCase(fetchWords.rejected, (state, action) => {
         state.loading = false;
@@ -82,8 +122,12 @@ const wordsSlice = createSlice({
       })
       .addCase(addWord.fulfilled, (state, action) => {
         state.error = null;
-        if (!state.words.includes(action.payload)) {
-          state.words.push(action.payload);
+        const w = action.payload;
+        if (!state.words.includes(w)) {
+          state.words.push(w);
+          if (w.length >= 6 && w.length <= 8) state.easyWords.push(w);
+          if (w.length >= 9 && w.length <= 11) state.mediumWords.push(w);
+          if (w.length >= 12 && w.length <= 14) state.hardWords.push(w);
         }
       })
       .addCase(addWord.rejected, (state, action) => {

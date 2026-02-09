@@ -1,13 +1,28 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { startGame } from '../store/slices/wordsSlice';
 
 export default function Home() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const gameWord = useAppSelector((s) => s.game.word);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handlePlay = () => {
-    if (selected) {
-      navigate('/game', { state: { difficulty: selected } });
+  // If a game is in progress, redirect to game page to continue (declarative so it runs on first render)
+  if (gameWord != null && gameWord !== '') {
+    return <Navigate to="/game" replace />;
+  }
+
+  const handlePlay = async () => {
+    if (!selected) return;
+    setError(null);
+    try {
+      await dispatch(startGame(selected)).unwrap();
+      navigate('/game');
+    } catch (e) {
+      setError(String(e));
     }
   };
 
@@ -79,6 +94,11 @@ export default function Home() {
               >
                 Let&apos;s play
               </button>
+              {error && (
+                <p style={{ marginTop: 8, fontSize: 14, color: '#dc2626' }}>
+                  {error}
+                </p>
+              )}
             </div>
           </div>
         </div>
