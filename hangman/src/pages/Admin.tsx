@@ -3,13 +3,29 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { addWord } from '../store/slices/wordsSlice';
 import { Button } from '../components/Button';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Admin() {
+  const { user, loading, signIn, signOut } = useAuth();
   const dispatch = useAppDispatch();
   const words = useAppSelector((s) => s.words.words);
   const [inputValue, setInputValue] = useState('');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError(null);
+    setSigningIn(true);
+    const { error } = await signIn(loginEmail.trim(), loginPassword);
+    setSigningIn(false);
+    if (error) setLoginError(error);
+  };
 
   const handleSave = async () => {
     const trimmed = inputValue.trim().toLowerCase();
@@ -38,47 +54,134 @@ export default function Admin() {
     }
   };
 
+  const pageWrapStyle = {
+    minHeight: 'calc(100vh - 2.5rem)' as const,
+    width: '100%' as const,
+    backgroundColor: 'var(--bg-page)',
+  };
+  const centerWrapStyle = {
+    display: 'flex' as const,
+    minHeight: 'calc(100vh - 2.5rem)' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  };
+  const cardStyle = {
+    display: 'flex' as const,
+    flexDirection: 'column' as const,
+    height: '75vh' as const,
+    width: '75vw' as const,
+    borderRadius: 24,
+    backgroundColor: 'var(--surface)',
+    padding: '2rem',
+    boxShadow: 'var(--shadow)',
+  };
+
+  if (loading) {
+    return (
+      <div style={pageWrapStyle}>
+        <div style={centerWrapStyle}>
+          <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Loading…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div style={pageWrapStyle}>
+        <div style={centerWrapStyle}>
+          <div className="page-card" style={cardStyle}>
+            <h1
+              style={{
+                textAlign: 'center',
+                fontSize: '1.875rem',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                margin: 0,
+              }}
+            >
+              Admin login
+            </h1>
+            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginTop: 8, marginBottom: 24 }}>
+              Sign in to manage words
+            </p>
+            <form
+              onSubmit={handleLogin}
+              style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 320, margin: '0 auto' }}
+            >
+              <input
+                type="email"
+                placeholder="Email"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                required
+                autoComplete="email"
+                style={{
+                  padding: '10px 12px',
+                  borderRadius: 8,
+                  border: '1px solid var(--border)',
+                  fontSize: 16,
+                  backgroundColor: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                style={{
+                  padding: '10px 12px',
+                  borderRadius: 8,
+                  border: '1px solid var(--border)',
+                  fontSize: 16,
+                  backgroundColor: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              {loginError && (
+                <p style={{ margin: 0, fontSize: 14, color: 'var(--error)' }}>{loginError}</p>
+              )}
+              <Button type="submit" variant="primary" disabled={signingIn} style={{ padding: '12px 16px' }}>
+                {signingIn ? 'Signing in…' : 'Sign in'}
+              </Button>
+              <Button variant="outline" as={Link} to="/" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center', padding: '12px 16px' }}>
+                Back to home
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      style={{
-        minHeight: 'calc(100vh - 2.5rem)',
-        width: '100%',
-        backgroundColor: 'var(--bg-page)',
-      }}
-    >
+    <div style={pageWrapStyle}>
       <div
         className="page-wrapper"
-        style={{
-          display: 'flex',
-          minHeight: 'calc(100vh - 2.5rem)',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        style={centerWrapStyle}
       >
         <div
           className="page-card"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '75vh',
-            width: '75vw',
-            borderRadius: 24,
-            backgroundColor: 'var(--surface)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow)',
-          }}
+          style={cardStyle}
         >
-          <h1
-            style={{
-              textAlign: 'center',
-              fontSize: '1.875rem',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}
-          >
-            Admin
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: '1.875rem',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+              }}
+            >
+              Admin
+            </h1>
+            <Button variant="outline" size="sm" onClick={() => signOut()}>
+              Sign out
+            </Button>
+          </div>
 
           <div
             className="admin-card-inner"

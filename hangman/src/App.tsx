@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <ThemeProvider>
+    <AuthProvider>
     <BrowserRouter>
       <div className="flex min-h-screen flex-col">
         <Navbar />
@@ -42,6 +44,7 @@ function App() {
         </main>
       </div>
     </BrowserRouter>
+    </AuthProvider>
     </ThemeProvider>
   );
 }
