@@ -5,6 +5,7 @@ import { addGuess, clearGame } from '../store/slices/gameSlice';
 import { startGame } from '../store/slices/wordsSlice';
 import { HangmanSVG } from '../components/HangmanSVG';
 import { Button } from '../components/Button';
+import { playCorrectGuess, playWrongGuess } from '../lib/sounds';
 
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const MAX_WRONG = 6;
@@ -37,9 +38,13 @@ export default function Game() {
   const guess = useCallback(
     (letter: string) => {
       if (gameOver || guessed.has(letter)) return;
-      dispatch(addGuess(letter.toLowerCase()));
+      const lower = letter.toLowerCase();
+      const correct = word != null && word.includes(lower);
+      dispatch(addGuess(lower));
+      if (correct) playCorrectGuess();
+      else playWrongGuess();
     },
-    [gameOver, guessed, dispatch]
+    [gameOver, guessed, word, dispatch]
   );
 
   const startNewGame = useCallback(() => {
