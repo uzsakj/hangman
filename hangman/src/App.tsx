@@ -3,17 +3,22 @@ import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
 import Game from './pages/Game';
 import Home from './pages/Home';
-import './App.css';
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <main className="flex flex-1 flex-col" style={{ minHeight: 'calc(100vh - 2.5rem)' }}>
+          <div className="flex-1 min-h-[calc(100vh-2.5rem)]">
+            <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/admin" element={<Admin />} />
+            </Routes>
+          </div>
+        </main>
+      </div>
     </BrowserRouter>
   );
 }

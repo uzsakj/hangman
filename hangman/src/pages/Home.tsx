@@ -1,14 +1,88 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handlePlay = () => {
+    if (selected) {
+      navigate('/game', { state: { difficulty: selected } });
+    }
+  };
+
   return (
-    <div>
-      <h1>Home</h1>
-      <nav>
-        <Link to="/game">Game</Link>
-        <span> · </span>
-        <Link to="/admin">Admin</Link>
-      </nav>
+    <div className="min-h-[calc(100vh-2.5rem)] w-full bg-gray-100">
+      <div className="flex min-h-[calc(100vh-2.5rem)] items-center justify-center">
+        <div className="flex h-[75vh] w-[75vw] flex-col rounded-[1.5rem] bg-white p-6 shadow-md sm:p-8">
+          <h1 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
+            Hangman Game
+          </h1>
+          <p className="mt-3 text-center text-gray-600">Choose a difficulty level</p>
+
+          <div className="mt-6 flex flex-1 flex-col items-center justify-center">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+              <button
+                type="button"
+                onClick={() => setSelected('easy')}
+                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: selected === 'easy' ? '#2563eb' : '#ffffff',
+                  color: selected === 'easy' ? '#ffffff' : '#1f2937',
+                  borderColor: selected === 'easy' ? '#1d4ed8' : '#d1d5db',
+                }}
+              >
+                Easy (6-8)
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelected('medium')}
+                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: selected === 'medium' ? '#2563eb' : '#ffffff',
+                  color: selected === 'medium' ? '#ffffff' : '#1f2937',
+                  borderColor: selected === 'medium' ? '#1d4ed8' : '#d1d5db',
+                }}
+              >
+                Medium (9-11)
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelected('hard')}
+                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: selected === 'hard' ? '#2563eb' : '#ffffff',
+                  color: selected === 'hard' ? '#ffffff' : '#1f2937',
+                  borderColor: selected === 'hard' ? '#1d4ed8' : '#d1d5db',
+                }}
+              >
+                Hard (12-14)
+              </button>
+            </div>
+
+            <div style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center' }}>
+              <button
+                type="button"
+                onClick={handlePlay}
+                disabled={!selected}
+                className="min-w-[220px] border-2 px-4 py-[22px] text-base font-semibold"
+                style={{
+                  borderRadius: 12,
+                  backgroundColor: selected ? '#2563eb' : '#e5e7eb',
+                  color: selected ? '#ffffff' : '#6b7280',
+                  borderColor: selected ? '#1d4ed8' : '#d1d5db',
+                  cursor: selected ? 'pointer' : 'not-allowed',
+                }}
+              >
+                Let&apos;s play
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
