@@ -1,10 +1,30 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
 import Game from './pages/Game';
 import Home from './pages/Home';
+import { fetchWords } from './store/slices/wordsSlice';
+import { useAppDispatch } from './store/hooks';
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  // Sync words from Supabase on first load and when tab becomes visible again
+  useEffect(() => {
+    dispatch(fetchWords());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        dispatch(fetchWords());
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <div className="flex min-h-screen flex-col">
