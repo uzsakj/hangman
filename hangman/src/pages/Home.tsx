@@ -27,25 +27,79 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-2.5rem)] w-full bg-gray-100">
-      <div className="flex min-h-[calc(100vh-2.5rem)] items-center justify-center">
-        <div className="flex h-[75vh] w-[75vw] flex-col rounded-[1.5rem] bg-white p-6 shadow-md sm:p-8">
-          <h1 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
+    <div
+      style={{
+        minHeight: 'calc(100vh - 2.5rem)',
+        width: '100%',
+        backgroundColor: '#f3f4f6',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          minHeight: 'calc(100vh - 2.5rem)',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '75vh',
+            width: '75vw',
+            borderRadius: 24,
+            backgroundColor: '#ffffff',
+            padding: '2rem',
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          }}
+        >
+          <h1
+            style={{
+              textAlign: 'center',
+              fontSize: '1.875rem',
+              fontWeight: 700,
+              color: '#111827',
+              margin: 0,
+            }}
+          >
             Hangman Game
           </h1>
-          <p className="mt-3 text-center text-gray-600">Choose a difficulty level</p>
+          <p
+            style={{
+              marginTop: 12,
+              textAlign: 'center',
+              color: '#6b7280',
+              marginBottom: 0,
+            }}
+          >
+            Choose a difficulty level
+          </p>
 
-          <div className="mt-6 flex flex-1 flex-col items-center justify-center">
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
               <button
                 type="button"
                 onClick={() => setSelected('easy')}
-                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
                 style={{
+                  minWidth: 220,
+                  padding: '18px 16px',
+                  fontSize: 14,
+                  fontWeight: 600,
                   borderRadius: 12,
+                  border: '2px solid',
                   backgroundColor: selected === 'easy' ? '#2563eb' : '#ffffff',
                   color: selected === 'easy' ? '#ffffff' : '#1f2937',
                   borderColor: selected === 'easy' ? '#1d4ed8' : '#d1d5db',
+                  cursor: 'pointer',
                 }}
               >
                 Easy (6-8)
@@ -53,12 +107,17 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setSelected('medium')}
-                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
                 style={{
+                  minWidth: 220,
+                  padding: '18px 16px',
+                  fontSize: 14,
+                  fontWeight: 600,
                   borderRadius: 12,
+                  border: '2px solid',
                   backgroundColor: selected === 'medium' ? '#2563eb' : '#ffffff',
                   color: selected === 'medium' ? '#ffffff' : '#1f2937',
                   borderColor: selected === 'medium' ? '#1d4ed8' : '#d1d5db',
+                  cursor: 'pointer',
                 }}
               >
                 Medium (9-11)
@@ -66,26 +125,35 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setSelected('hard')}
-                className="min-w-[220px] border-2 px-4 py-[18px] text-sm font-semibold"
                 style={{
+                  minWidth: 220,
+                  padding: '18px 16px',
+                  fontSize: 14,
+                  fontWeight: 600,
                   borderRadius: 12,
+                  border: '2px solid',
                   backgroundColor: selected === 'hard' ? '#2563eb' : '#ffffff',
                   color: selected === 'hard' ? '#ffffff' : '#1f2937',
                   borderColor: selected === 'hard' ? '#1d4ed8' : '#d1d5db',
+                  cursor: 'pointer',
                 }}
               >
                 Hard (12-14)
               </button>
             </div>
 
-            <div style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ marginTop: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <button
                 type="button"
                 onClick={handlePlay}
                 disabled={!selected}
-                className="min-w-[220px] border-2 px-4 py-[22px] text-base font-semibold"
                 style={{
+                  minWidth: 220,
+                  padding: '22px 16px',
+                  fontSize: 16,
+                  fontWeight: 600,
                   borderRadius: 12,
+                  border: '2px solid',
                   backgroundColor: selected ? '#2563eb' : '#e5e7eb',
                   color: selected ? '#ffffff' : '#6b7280',
                   borderColor: selected ? '#1d4ed8' : '#d1d5db',
