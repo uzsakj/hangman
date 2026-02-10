@@ -20,7 +20,7 @@ export function HangmanSVG({ wrongCount }: HangmanSVGProps) {
   return (
     <svg
       viewBox="0 0 10 12"
-      style={{ width: '100%', maxWidth: 200, height: 'auto' }}
+      className="w-full max-w-[200px] h-auto"
       xmlns="http://www.w3.org/2000/svg"
     >
       <style>

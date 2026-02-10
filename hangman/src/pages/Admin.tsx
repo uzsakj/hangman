@@ -54,33 +54,15 @@ export default function Admin() {
     }
   };
 
-  const pageWrapStyle = {
-    minHeight: 'calc(100vh - 2.5rem)' as const,
-    width: '100%' as const,
-    backgroundColor: 'var(--bg-page)',
-  };
-  const centerWrapStyle = {
-    display: 'flex' as const,
-    minHeight: 'calc(100vh - 2.5rem)' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-  };
-  const cardStyle = {
-    display: 'flex' as const,
-    flexDirection: 'column' as const,
-    height: '75vh' as const,
-    width: '75vw' as const,
-    borderRadius: 24,
-    backgroundColor: 'var(--surface)',
-    padding: '2rem',
-    boxShadow: 'var(--shadow)',
-  };
+  const pageWrap = 'min-h-[calc(100vh-2.5rem)] w-full bg-[var(--bg-page)] overflow-auto md:overflow-visible';
+  const centerWrap = 'flex min-h-[calc(100vh-2.5rem)] items-start md:items-center justify-center py-2 md:py-0 overflow-auto md:overflow-visible';
+  const card = 'flex flex-col w-[95vw] md:w-[75vw] h-auto min-h-[50vh] md:h-[75vh] md:min-h-0 rounded-3xl bg-[var(--surface)] p-4 my-2 md:m-0 md:p-8 shadow-[var(--shadow)]';
 
   if (loading) {
     return (
-      <div style={pageWrapStyle}>
-        <div style={centerWrapStyle}>
-          <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Loading…</p>
+      <div className={pageWrap}>
+        <div className={centerWrap}>
+          <p className="m-0 text-[var(--text-secondary)]">Loading…</p>
         </div>
       </div>
     );
@@ -88,26 +70,18 @@ export default function Admin() {
 
   if (!user) {
     return (
-      <div style={pageWrapStyle}>
-        <div style={centerWrapStyle}>
-          <div className="page-card" style={cardStyle}>
-            <h1
-              style={{
-                textAlign: 'center',
-                fontSize: '1.875rem',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+      <div className={pageWrap}>
+        <div className={centerWrap}>
+          <div className={card}>
+            <h1 className="text-center text-2xl md:text-3xl font-bold text-[var(--text-primary)] m-0">
               Admin login
             </h1>
-            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginTop: 8, marginBottom: 24 }}>
+            <p className="text-center text-[var(--text-secondary)] mt-2 mb-6">
               Sign in to manage words
             </p>
             <form
               onSubmit={handleLogin}
-              style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 320, margin: '0 auto' }}
+              className="flex flex-col gap-3 max-w-xs mx-auto"
             >
               <input
                 type="email"
@@ -116,14 +90,7 @@ export default function Admin() {
                 onChange={(e) => setLoginEmail(e.target.value)}
                 required
                 autoComplete="email"
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  border: '1px solid var(--border)',
-                  fontSize: 16,
-                  backgroundColor: 'var(--surface)',
-                  color: 'var(--text-primary)',
-                }}
+                className="px-3 py-2.5 rounded-lg border border-[var(--border)] text-base bg-[var(--surface)] text-[var(--text-primary)]"
               />
               <input
                 type="password"
@@ -132,22 +99,15 @@ export default function Admin() {
                 onChange={(e) => setLoginPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  border: '1px solid var(--border)',
-                  fontSize: 16,
-                  backgroundColor: 'var(--surface)',
-                  color: 'var(--text-primary)',
-                }}
+                className="px-3 py-2.5 rounded-lg border border-[var(--border)] text-base bg-[var(--surface)] text-[var(--text-primary)]"
               />
               {loginError && (
-                <p style={{ margin: 0, fontSize: 14, color: 'var(--error)' }}>{loginError}</p>
+                <p className="m-0 text-sm text-[var(--error)]">{loginError}</p>
               )}
-              <Button type="submit" variant="primary" disabled={signingIn} style={{ padding: '12px 16px' }}>
+              <Button type="submit" variant="primary" size="sm" disabled={signingIn}>
                 {signingIn ? 'Signing in…' : 'Sign in'}
               </Button>
-              <Button variant="outline" as={Link} to="/" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center', padding: '12px 16px' }}>
+              <Button variant="outline" size="sm" as={Link} to="/" className="inline-block text-center no-underline">
                 Back to home
               </Button>
             </form>
@@ -158,24 +118,11 @@ export default function Admin() {
   }
 
   return (
-    <div style={pageWrapStyle}>
-      <div
-        className="page-wrapper"
-        style={centerWrapStyle}
-      >
-        <div
-          className="page-card"
-          style={cardStyle}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: '1.875rem',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-              }}
-            >
+    <div className={pageWrap}>
+      <div className={centerWrap}>
+        <div className={card}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h1 className="m-0 text-2xl md:text-3xl font-bold text-[var(--text-primary)]">
               Admin
             </h1>
             <Button variant="outline" size="sm" onClick={() => signOut()}>
@@ -183,27 +130,10 @@ export default function Admin() {
             </Button>
           </div>
 
-          <div
-            className="admin-card-inner"
-            style={{
-              display: 'flex',
-              flex: 1,
-              gap: '2rem',
-              marginTop: '1.5rem',
-              minHeight: 0,
-            }}
-          >
+          <div className="flex flex-col md:flex-row flex-1 gap-6 md:gap-8 mt-6 min-h-0">
             {/* Left: word adding section */}
-            <div
-              className="admin-form-section"
-              style={{
-                flex: '0 0 280px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-              }}
-            >
-              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: 14 }}>
+            <div className="flex-none w-full md:w-[280px] flex flex-col gap-3">
+              <p className="m-0 text-sm text-[var(--text-muted)]">
                 Words you would like to add to the list
               </p>
               <input
@@ -211,64 +141,28 @@ export default function Admin() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="New word"
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  border: '1px solid var(--border)',
-                  fontSize: 16,
-                  backgroundColor: 'var(--surface)',
-                  color: 'var(--text-primary)',
-                }}
+                className="px-3 py-2.5 rounded-lg border border-[var(--border)] text-base bg-[var(--surface)] text-[var(--text-primary)]"
               />
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleSave}
-                disabled={saving}
-                style={{ padding: '12px 16px' }}
-              >
+              <Button variant="primary" size="sm" onClick={handleSave} disabled={saving}>
                 {saving ? 'Saving…' : 'Save'}
               </Button>
-              <Button variant="outline" size="sm" as={Link} to="/" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center' }}>
+              <Button variant="outline" size="sm" as={Link} to="/" className="inline-block text-center no-underline">
                 Back
               </Button>
               {message && (
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 14,
-                    color: message.type === 'ok' ? 'var(--success)' : 'var(--error)',
-                  }}
-                >
+                <p className={`m-0 text-sm ${message.type === 'ok' ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
                   {message.text}
                 </p>
               )}
             </div>
 
             {/* Right: list of words in columns */}
-            <div
-              className="admin-words-list"
-              style={{
-                flex: 1,
-                overflow: 'auto',
-                columnCount: 3,
-                columnGap: '1.5rem',
-                columnFill: 'balance' as const,
-              }}
-            >
+            <div className="flex-1 overflow-auto columns-2 md:columns-3 gap-6 [column-fill:balance]">
               {words.length === 0 ? (
-                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 14 }}>No words yet.</p>
+                <p className="m-0 text-sm text-[var(--text-secondary)]">No words yet.</p>
               ) : (
                 words.map((word) => (
-                  <div
-                    key={word}
-                    style={{
-                      breakInside: 'avoid' as const,
-                      padding: '4px 0',
-                      fontSize: 14,
-                      color: 'var(--text-muted)',
-                    }}
-                  >
+                  <div key={word} className="break-inside-avoid py-1 text-sm text-[var(--text-muted)]">
                     {word}
                   </div>
                 ))

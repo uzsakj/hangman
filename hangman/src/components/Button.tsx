@@ -4,13 +4,18 @@ export type ButtonVariant = 'primary' | 'outline' | 'default';
 
 type ButtonProps<T extends ElementType = 'button'> = {
   variant?: ButtonVariant;
-  size?: 'md' | 'sm';
+  size?: 'sm' | 'md' | 'lg';
   selected?: boolean;
   as?: T;
   children: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
-} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'children' | 'className' | 'style'>;
+} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'children' | 'className'>;
+
+const sizeClasses = {
+  sm: 'px-4 py-2.5 text-sm',
+  md: 'min-w-[min(220px,85vw)] px-4 py-[18px] text-sm',
+  lg: 'min-w-[min(220px,85vw)] px-4 py-[22px] text-base',
+};
 
 export function Button<T extends ElementType = 'button'>({
   variant = 'default',
@@ -18,8 +23,7 @@ export function Button<T extends ElementType = 'button'>({
   selected = false,
   as,
   children,
-  className,
-  style,
+  className = '',
   disabled,
   ...rest
 }: ButtonProps<T>) {
@@ -28,43 +32,15 @@ export function Button<T extends ElementType = 'button'>({
   const isPrimary = variant === 'primary' || (variant === 'default' && selected);
   const isOutline = variant === 'outline' && !selected;
 
-  const baseStyle: React.CSSProperties = {
-    borderRadius: size === 'sm' ? 4 : 6,
-    fontWeight: 600,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    border: '2px solid',
-  };
-
-  const sizeStyle: React.CSSProperties =
-    size === 'sm'
-      ? { padding: '10px 16px', fontSize: 14 }
-      : { minWidth: 'min(220px, 85vw)', padding: '18px 16px', fontSize: 14 };
-
-  const variantStyle: React.CSSProperties = disabled
-    ? {
-      backgroundColor: 'var(--muted-bg)',
-      color: 'var(--text-secondary)',
-      borderColor: 'var(--border)',
-    }
+  const variantClasses = disabled
+    ? 'bg-[var(--muted-bg)] text-[var(--text-secondary)] border-[var(--border)] cursor-not-allowed'
     : isPrimary
-      ? {
-        backgroundColor: 'var(--primary)',
-        color: '#ffffff',
-        borderColor: 'var(--primary)',
-      }
+      ? 'bg-[var(--primary)] text-white border-[var(--primary)] cursor-pointer'
       : isOutline
-        ? {
-          backgroundColor: 'var(--surface)',
-          color: 'var(--primary)',
-          borderColor: 'var(--primary)',
-        }
-        : {
-          backgroundColor: 'var(--surface)',
-          color: 'var(--text-primary)',
-          borderColor: 'var(--border)',
-        };
+        ? 'bg-[var(--surface)] text-[var(--primary)] border-[var(--primary)] cursor-pointer'
+        : 'bg-[var(--surface)] text-[var(--text-primary)] border-[var(--border)] cursor-pointer';
 
-  const combinedStyle = { ...baseStyle, ...sizeStyle, ...variantStyle, ...style };
+  const roundedClass = size === 'sm' ? 'rounded' : 'rounded-md';
 
   const buttonOnlyProps =
     Component === 'button'
@@ -73,8 +49,7 @@ export function Button<T extends ElementType = 'button'>({
 
   return (
     <Component
-      className={className}
-      style={combinedStyle}
+      className={`border-2 font-semibold ${roundedClass} ${sizeClasses[size]} ${variantClasses} ${className}`.trim()}
       {...buttonOnlyProps}
       {...rest}
     >

@@ -62,105 +62,42 @@ export default function Game() {
 
   if (word === null) {
     return (
-      <div style={{ minHeight: 'calc(100vh - 2.5rem)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-page)' }}>
-        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Loading...</p>
+      <div className="min-h-[calc(100vh-2.5rem)] flex items-center justify-center bg-[var(--bg-page)]">
+        <p className="m-0 text-[var(--text-secondary)]">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: 'calc(100vh - 2.5rem)',
-        width: '100%',
-        backgroundColor: 'var(--bg-page)',
-      }}
-    >
-      <div
-        className="page-wrapper"
-        style={{
-          display: 'flex',
-          minHeight: 'calc(100vh - 2.5rem)',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          className="page-card game-card-inner"
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '2rem',
-            height: '75vh',
-            width: '75vw',
-            borderRadius: 24,
-            backgroundColor: 'var(--surface)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow)',
-          }}
-        >
+    <div className="min-h-[calc(100vh-2.5rem)] w-full bg-[var(--bg-page)] overflow-auto md:overflow-visible">
+      <div className="flex min-h-[calc(100vh-2.5rem)] items-start md:items-center justify-center py-2 md:py-0 overflow-auto md:overflow-visible">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 w-[95vw] md:w-[75vw] h-auto min-h-[50vh] md:h-[75vh] rounded-3xl bg-[var(--surface)] p-4 my-2 md:m-0 md:p-8 shadow-[var(--shadow)]">
           {/* Left section */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-              }}
-            >
+          <div className="flex-1 flex flex-col min-w-0">
+            <h1 className="m-0 text-2xl md:text-3xl font-bold text-[var(--text-primary)]">
               Hangman game
             </h1>
 
             {gameOver && (
-              <p
-                style={{
-                  margin: '12px 0 0',
-                  fontSize: '1.125rem',
-                  fontWeight: 600,
-                  color: won ? 'var(--success)' : 'var(--error)',
-                }}
-              >
+              <p className={`mt-3 text-lg font-semibold ${won ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
                 {won ? 'You have won!' : 'You have lost!'}
               </p>
             )}
 
-            <div
-              className="game-display-word"
-              style={{
-                marginTop: 16,
-                fontSize: 24,
-                letterSpacing: 4,
-                fontFamily: 'monospace',
-                minHeight: 36,
-              }}
-            >
+            <div className="mt-4 text-2xl md:text-2xl tracking-widest font-mono min-h-9 break-all">
               {displayWord || '...'}
             </div>
 
-            <div
-              className="game-keyboard"
-              style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}
-            >
+            <div className="mt-6 flex flex-wrap gap-1.5 md:gap-1.5 justify-center">
               {ALPHABET.map((letter) => {
                 const used = guessed.has(letter);
                 return (
                   <button
                     key={letter}
                     type="button"
-                    className="game-letter-btn"
+                    className="w-7 h-7 md:w-9 md:h-9 rounded-lg border border-[var(--border)] font-semibold text-xs md:text-base disabled:cursor-default disabled:bg-[var(--muted-bg)] disabled:text-[var(--text-secondary)] bg-[var(--surface)] text-[var(--text-muted)] cursor-pointer enabled:hover:opacity-90"
                     onClick={() => guess(letter)}
                     disabled={used}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 8,
-                      border: '1px solid var(--border)',
-                      backgroundColor: used ? 'var(--muted-bg)' : 'var(--surface)',
-                      color: used ? 'var(--text-secondary)' : 'var(--text-muted)',
-                      fontWeight: 600,
-                      cursor: used ? 'default' : 'pointer',
-                    }}
                   >
                     {letter.toUpperCase()}
                   </button>
@@ -168,11 +105,11 @@ export default function Game() {
               })}
             </div>
 
-            <p style={{ marginTop: 20, marginBottom: 0, fontSize: 14, color: 'var(--text-muted)' }}>
+            <p className="mt-5 mb-0 text-sm text-[var(--text-muted)]">
               remaining possibility of failures: <strong>{remaining}</strong>
             </p>
 
-            <div className="game-actions" style={{ marginTop: 24, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" size="sm" onClick={endGame}>
                 End game
               </Button>
@@ -183,15 +120,7 @@ export default function Game() {
           </div>
 
           {/* Right section: hangman SVG */}
-          <div
-            className="game-svg-section"
-            style={{
-              flex: '0 0 220px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <div className="flex-none flex items-center justify-center min-h-40 md:min-h-0 md:w-[220px]">
             <HangmanSVG wrongCount={wrongCount} />
           </div>
         </div>

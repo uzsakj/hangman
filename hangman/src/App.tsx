@@ -33,7 +33,7 @@ function App() {
     <BrowserRouter>
       <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="flex flex-1 flex-col" style={{ minHeight: 'calc(100vh - 2.5rem)' }}>
+        <main className="flex flex-1 flex-col min-h-[calc(100vh-2.5rem)]">
           <div className="flex-1 min-h-[calc(100vh-2.5rem)]">
             <Routes>
             <Route path="/" element={<Home />} />

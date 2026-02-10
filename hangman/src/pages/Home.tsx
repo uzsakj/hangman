@@ -28,68 +28,18 @@ export default function Home() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: 'calc(100vh - 2.5rem)',
-        width: '100%',
-        backgroundColor: 'var(--bg-page)',
-      }}
-    >
-      <div
-        className="page-wrapper"
-        style={{
-          display: 'flex',
-          minHeight: 'calc(100vh - 2.5rem)',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          className="page-card"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '75vh',
-            width: '75vw',
-            borderRadius: 24,
-            backgroundColor: 'var(--surface)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow)',
-          }}
-        >
-          <h1
-            className="home-title"
-            style={{
-              textAlign: 'center',
-              fontSize: '1.875rem',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}
-          >
+    <div className="min-h-[calc(100vh-2.5rem)] w-full bg-[var(--bg-page)] overflow-auto md:overflow-visible">
+      <div className="flex min-h-[calc(100vh-2.5rem)] items-start md:items-center justify-center py-2 md:py-0 overflow-auto md:overflow-visible">
+        <div className="flex flex-col w-[95vw] md:w-[75vw] h-auto min-h-[50vh] md:h-[75vh] md:min-h-0 rounded-3xl bg-[var(--surface)] p-4 my-2 md:m-0 md:p-8 shadow-[var(--shadow)]">
+          <h1 className="text-center text-2xl md:text-3xl font-bold text-[var(--text-primary)] m-0">
             Hangman Game
           </h1>
-          <p
-            style={{
-              marginTop: 12,
-              textAlign: 'center',
-              color: 'var(--text-secondary)',
-              marginBottom: 0,
-            }}
-          >
+          <p className="mt-3 text-center text-[var(--text-secondary)] mb-0">
             Choose a difficulty level
           </p>
 
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
               <Button
                 variant="default"
                 selected={selected === 'easy'}
@@ -113,17 +63,17 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="home-buttons-wrap" style={{ marginTop: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div className="mt-8 md:mt-20 flex flex-col items-center">
               <Button
                 variant="primary"
+                size="lg"
                 disabled={!selected}
                 onClick={handlePlay}
-                style={{ padding: '22px 16px', fontSize: 16 }}
               >
                 Let&apos;s play
               </Button>
               {error && (
-                <p style={{ marginTop: 8, fontSize: 14, color: 'var(--error)' }}>
+                <p className="mt-2 text-sm text-[var(--error)]">
                   {error}
                 </p>
               )}
